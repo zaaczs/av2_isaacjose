@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamentos Online</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"], input[type="number"], input[type="password"], select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pagamentos Online</h1>
+    <form id="paymentForm">
+        <label for="name">Nome Completo:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="paymentMethod">Método de Pagamento:</label>
+        <select id="paymentMethod" name="paymentMethod" required>
+            <option value="">Selecione...</option>
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Cartão de Crédito">Cartão de Crédito</option>
+            <option value="Cartão de Débito">Cartão de Débito</option>
+            <option value="Pix">Pix</option>
+        </select>
+        <div id="cardDetails" style="display: none;">
+            <label for="cardNumber">Número do Cartão:</label>
+            <input type="text" id="cardNumber" name="cardNumber">
+            <label for="cvv">CVV:</label>
+            <input type="password" id="cvv" name="cvv">
+            <label for="expiryDate">Data de Validade:</label>
+            <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/AA">
+        </div>
+        <button type="submit">Efetuar Pagamento</button>
+    </form>
+    <div id="paymentStatus"></div>
+
+    <script>
+        const paymentForm = document.getElementById('paymentForm');
+        const cardDetails = document.getElementById('cardDetails');
+
+        paymentForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(paymentForm);
+            const paymentMethod = formData.get('paymentMethod');
+
+            if (paymentMethod === 'Cartão de Crédito' || paymentMethod === 'Cartão de Débito') {
+                cardDetails.style.display = 'block';
+            } else {
+                cardDetails.style.display = 'none';
+            }
+
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const cardNumber = formData.get('cardNumber');
+            const cvv = formData.get('cvv');
+            const expiryDate = formData.get('expiryDate');
+
+            // Simulação de aprovação de pagamento
+            const paymentApproved = Math.random() < 0.8; // 80% de chance de aprovação
+
+            const paymentStatus = document.getElementById('paymentStatus');
+            paymentStatus.textContent = paymentApproved ? 'Pagamento Aprovado!' : 'Pagamento não foi aprovado.';
+        });
+    </script>
+</body>
+</html>
